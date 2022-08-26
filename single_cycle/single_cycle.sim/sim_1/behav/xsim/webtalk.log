@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Webtalk v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Thu Aug 25 21:10:18 2022
+# Process ID: 2356
+# Current directory: F:/d41/cpu_pipline/single_cycle/single_cycle.sim/sim_1/behav/xsim
+# Command line: wbtcv.exe -mode batch -source F:/d41/cpu_pipline/single_cycle/single_cycle.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/webtalk/xsim_webtalk.tcl -notrace
+# Log file: F:/d41/cpu_pipline/single_cycle/single_cycle.sim/sim_1/behav/xsim/webtalk.log
+# Journal file: F:/d41/cpu_pipline/single_cycle/single_cycle.sim/sim_1/behav/xsim\webtalk.jou
+#-----------------------------------------------------------
+source F:/d41/cpu_pipline/single_cycle/single_cycle.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/webtalk/xsim_webtalk.tcl -notrace
+webtalk_transmit: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 109.934 ; gain = 17.527
+INFO: [Common 17-206] Exiting Webtalk at Thu Aug 25 21:10:26 2022...
