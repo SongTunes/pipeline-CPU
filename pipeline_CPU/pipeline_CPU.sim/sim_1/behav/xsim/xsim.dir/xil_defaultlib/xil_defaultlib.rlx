@@ -1,0 +1,22 @@
+0.6
+2019.2
+Nov  6 2019
+21:57:16
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.sim/sim_1/behav/xsim/glbl.v,1661506146,verilog,,,,glbl,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sim_1/new/testbench.v,1661506796,verilog,,,,testbench,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/confreg/confreg.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,,confreg,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/ip/data_ram/sim/data_ram.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/ip/inst_rom/sim/inst_rom.v,,data_ram,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/ip/inst_rom/sim/inst_rom.v,1661506337,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/confreg/confreg.v,,inst_rom,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/cpu.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/ex.v,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,mycpu,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/cpu.v,,,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/ex.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/ex_mem.v,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,ex,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/ex_mem.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/id.v,,ex_mem,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/id.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/id_ex.v,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,id,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/id_ex.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/if_id.v,,id_ex,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/if_id.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/mem.v,,if_id,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/mem.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/mem_wb.v,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,mem,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/mem_wb.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/pc_reg.v,,mem_wb,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/pc_reg.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/regfile.v,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,pc_reg,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/regfile.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/wb.v,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,regfile,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/wb.v,1661506146,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/pipeline_CPU.v,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/myCPU/defines.v,wb,,,,,,,,
+D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/pipeline_CPU.v,1661506732,verilog,,D:/git-project/pipeline_CPU/pipeline_CPU/pipeline_CPU.srcs/sim_1/new/testbench.v,,pipeline_CPU,,,,,,,,
