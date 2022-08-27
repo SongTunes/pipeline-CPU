@@ -11,7 +11,7 @@ vlog -work dist_mem_gen_v8_0_13  -v2k5 \
 "../../../ipstatic/simulation/dist_mem_gen_v8_0.v" \
 
 vlog -work xil_defaultlib  -v2k5 \
-"../../../../single_cycle.srcs/sources_1/new/ip/inst_rom/sim/inst_rom.v" \
+"../../../../pipeline_CPU.srcs/sources_1/new/ip/inst_rom/sim/inst_rom.v" \
 
 
 vlog -work xil_defaultlib \

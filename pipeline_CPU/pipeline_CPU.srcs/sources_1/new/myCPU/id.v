@@ -99,6 +99,27 @@ module id(
     				                reg1_read_o <= 1'b1;	
     				                reg2_read_o <= 1'b1;
     				            end
+    				            `FUNC_ADDU: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_ADDU_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_SUB: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_SUB_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_SUBU: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_SUBU_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
     					        default : begin
                                 end
                             endcase
@@ -160,6 +181,33 @@ module id(
     				reg2_read_o <= 1'b1; 
     		  		//alusel_o <= `EXE_RES_LOAD_STORE; 
     			end
+    			`INST_BNE:			begin
+    		  		wreg_o <= `WriteDisable;		
+    				aluop_o <= `EXE_BNE_OP;
+    		  		//alusel_o <= `EXE_RES_JUMP_BRANCH; 
+    				reg1_read_o <= 1'b1;	
+    				reg2_read_o <= 1'b1;
+    		  		if(reg1_o != reg2_o) begin
+    			    	branch_target_addr_o <= pc_plus_4 + imm_sll2_signedext;
+    			    	branch_flag_o <= `Branch;	  	
+    			    end
+    			end
+    			`INST_ADDI:          begin
+    				wreg_o <= `WriteEnable;		
+    				aluop_o <= `EXE_ADDI_OP;
+    		  		//alusel_o <= `EXE_RES_ARITHMETIC;		
+    				reg1_read_o <= 1'b1;//1:reg	
+    				reg2_read_o <= 1'b0;//0:imm
+    			end
+    			
+    			`INST_ADDIU:          begin
+    				wreg_o <= `WriteEnable;		
+    				aluop_o <= `EXE_ADDIU_OP;
+    		  		//alusel_o <= `EXE_RES_ARITHMETIC;		
+    				reg1_read_o <= 1'b1;//1:reg	
+    				reg2_read_o <= 1'b0;//0:imm
+    			end
+    			
     			default:begin
     			end
             endcase

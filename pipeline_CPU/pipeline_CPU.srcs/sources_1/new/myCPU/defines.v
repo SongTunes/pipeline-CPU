@@ -22,6 +22,13 @@
 `define INST_SW         6'b101011
 `define INST_NOP        6'b000000
 `define INST_FUNC       6'b000000
+
+`define INST_BNE        6'b000101
+`define INST_ADDI       6'b001000
+`define INST_ADDIU      6'b001001
+`define FUNC_ADDU       6'b100001
+`define FUNC_SUB        6'b100010
+`define FUNC_SUBU       6'b100011
 // AluOp
 `define EXE_NOP_OP      0
 `define EXE_OR_OP       1
@@ -33,4 +40,9 @@
 `define EXE_LW_OP       7
 `define EXE_SW_OP       8
 
-
+`define EXE_BNE_OP      9
+`define EXE_ADDI_OP     10
+`define EXE_ADDIU_OP    11
+`define EXE_ADDU_OP     12
+`define EXE_SUB_OP      13
+`define EXE_SUBU_OP     14

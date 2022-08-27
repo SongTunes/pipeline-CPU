@@ -46,6 +46,7 @@ module ex(
     // calculate
     assign res_or = reg1_i | reg2_i;
     assign res_add = reg1_i + reg2_i;
+    assign res_sub = reg1_i - reg2_i;
 
     // overflow?
     assign overflow_add = ((!reg1_i[31] && !reg2_i[31]) && res_add[31]) || ((reg1_i[31] && reg2_i[31]) && (!res_add[31]));
@@ -56,7 +57,7 @@ module ex(
     always @ (*) begin
         wd_o <= wd_i;       // addr of the reg we will write
     	// ignore if overflow
-    	if((aluop_i == `EXE_ADD_OP) && (overflow_add == 1'b1)) begin
+    	if((aluop_i == `EXE_ADD_OP|`EXE_ADDI_OP|`EXE_SUB_OP) && (overflow_add == 1'b1)) begin
     		wreg_o <= `WriteDisable;
     	end else begin
     		wreg_o <= wreg_i;
@@ -67,6 +68,21 @@ module ex(
             end
     		`EXE_ADD_OP : begin
     			wdata_o <= res_add;
+    		end
+    		`EXE_ADDI_OP : begin
+    			wdata_o <= res_add;
+    		end
+    		`EXE_ADDIU_OP : begin
+    			wdata_o <= res_add;
+    		end
+    		`EXE_ADDU_OP : begin
+    			wdata_o <= res_add;
+    		end
+    		`EXE_SUB_OP : begin
+    			wdata_o <= res_sub;
+    		end
+    		`EXE_SUBU_OP : begin
+    			wdata_o <= res_sub;
     		end
             default : begin
                 wdata_o <= `ZeroWord;
