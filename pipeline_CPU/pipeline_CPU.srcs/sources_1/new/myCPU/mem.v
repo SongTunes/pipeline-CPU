@@ -11,7 +11,7 @@ module mem(
 	// info from EX
 	input wire[4:0]       			wd_i,
 	input wire                    	wreg_i,
-	input wire[31:0]			  	wdata_i,
+	input wire[31:0]			  	    wdata_i,
 	
 	input wire[4:0]        			aluop_i,
 	input wire[31:0]          		mem_addr_i,

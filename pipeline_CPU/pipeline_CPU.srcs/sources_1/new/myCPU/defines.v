@@ -11,17 +11,31 @@
 `define RegNum          32               // reg num
 `define RegNumLog2      5            // num of reg id
 
+// func code
+`define FUNC_ADD        6'b100000  // ADD
+`define FUNC_SUBU       6'b100011  // SUBU'
+`define FUNC_ADDU       6'b100001  // ADDU
+`define FUNC_AND        6'b100100  // AND'
+`define FUNC_OR         6'b100101  // OR'
+`define FUNC_NOR        6'b100111  // NOR'
+`define FUNC_XOR        6'b100110  // XOR'
+`define FUNC_SRLV       6'b000110  // SRLV'
+`define FUNC_SRAV       6'b000111  // SRAV'
+
 // opcode
-`define INSR_OR         6'b100101  
+//`define INSR_OR         6'b100101  
 `define INST_ORI        6'b001101  
 `define INST_LUI        6'b001111     
-`define FUNC_ADD        6'b100000	
+
 `define INST_J          6'b000010	
 `define INST_BEQ        6'b000100
 `define INST_LW         6'b100011
 `define INST_SW         6'b101011
 `define INST_NOP        6'b000000
 `define INST_FUNC       6'b000000
+
+
+
 // AluOp
 `define EXE_NOP_OP      0
 `define EXE_OR_OP       1
@@ -32,5 +46,14 @@
 `define EXE_BEQ_OP      6
 `define EXE_LW_OP       7
 `define EXE_SW_OP       8
+
+`define EXE_SUB_OP      9
+`define EXE_AND_OP      10
+`define EXE_XOR_OP      11
+`define EXE_NOR_OP      12
+`define EXE_SLL_OP      13
+`define EXE_SRL_OP     14
+`define EXE_SRA_OP     15
+
 
 

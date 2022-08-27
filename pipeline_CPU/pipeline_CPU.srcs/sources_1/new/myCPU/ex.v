@@ -44,8 +44,14 @@ module ex(
     
     
     // calculate
-    assign res_or = reg1_i | reg2_i;
     assign res_add = reg1_i + reg2_i;
+    assign res_sub = reg1_i - reg2_i;
+    assign res_and = reg1_i & reg2_i;
+    assign res_nor = ~(reg1_i | reg2_i);
+    assign res_or = reg1_i | reg2_i;
+    assign res_xor = reg1_i ^ reg2_i;
+    assign res_srl = reg2_i >> reg1_i[4:0];
+    assign res_sra = ({32{reg2_i[31]}}<<(6'd32-{1'b0,reg1_i[4:0]})) | reg2_i >> reg1_i[4:0];
 
     // overflow?
     assign overflow_add = ((!reg1_i[31] && !reg2_i[31]) && res_add[31]) || ((reg1_i[31] && reg2_i[31]) && (!res_add[31]));
@@ -62,11 +68,29 @@ module ex(
     		wreg_o <= wreg_i;
     	end
         case(aluop_i)
+            `EXE_ADD_OP : begin
+    			wdata_o <= res_add;
+    		end
+    		`EXE_SUB_OP : begin
+    			wdata_o <= res_sub;
+    		end
+    		`EXE_AND_OP : begin
+    			wdata_o <= res_and;
+    		end
+    		`EXE_NOR_OP : begin
+    			wdata_o <= res_nor;
+    		end
             `EXE_OR_OP : begin
                 wdata_o <= res_or;
             end
-    		`EXE_ADD_OP : begin
-    			wdata_o <= res_add;
+    		`EXE_XOR_OP : begin
+    			wdata_o <= res_xor;
+    		end
+    		`EXE_SRL_OP : begin
+    			wdata_o <= res_srl;
+    		end
+    		`EXE_SRA_OP : begin
+    			wdata_o <= res_sra;
     		end
             default : begin
                 wdata_o <= `ZeroWord;

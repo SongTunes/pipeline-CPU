@@ -31,7 +31,7 @@ module id(
 	
 	// branch info to PC
 	output reg 					        branch_flag_o,
-	output reg[31:0]			        branch_target_addr_o,
+	output reg[31:0]			            branch_target_addr_o,
 	
     // info to EX
     output reg[4:0]                     aluop_o,
@@ -95,6 +95,55 @@ module id(
     				            `FUNC_ADD: begin
     				                wreg_o <= `WriteEnable;		
     				                aluop_o <= `EXE_ADD_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_SUBU: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_SUB_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_AND: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_AND_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_NOR: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_NOR_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_OR: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_OR_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_XOR: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_XOR_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_SRLV: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_SRL_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
+    				            `FUNC_SRAV: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_SRA_OP;
     		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
     				                reg1_read_o <= 1'b1;	
     				                reg2_read_o <= 1'b1;
