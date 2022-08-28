@@ -3,6 +3,8 @@
 In MEM_WB, we pass the result in MEM to
 WB module after a clk cycle.
 */
+`include "defines.v"
+
 module mem_wb(
     input wire                      clk,
     input wire                      rst,

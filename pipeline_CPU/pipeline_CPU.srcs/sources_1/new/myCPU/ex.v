@@ -26,11 +26,23 @@ module ex(
 );
 
     wire[31:0]                   res_or;		// ans of or
-    wire[31:0]                   res_add; // ans of math
+    wire[31:0]                   res_add; // ans of add
     wire[31:0]                   res_sll; // ans of sll
     wire[31:0]                   res_srl; // ans of srl
-    wire                         overflow_add;		
+
+    wire[32:0]                   res_add_e;
+    wire[32:0]                   res_sub_e;
+
+    wire                         overflow_add;	
+    wire                         overflow_sub;
+
+
     wire[5:0]                    sa; //offset of sll or srl    
+
+    wire[32:0]                   reg1_e;
+    wire[32:0]                   reg2_e;
+    wire[31:0]                   reg2_n;
+    wire[32:0]                   reg2_n_e;
     // -----
     // pass aluop to MEM
     assign aluop_o = aluop_i;
@@ -59,7 +71,16 @@ module ex(
     assign res_sra = ({32{reg2_i[31]}}<<(6'd32-{1'b0,reg1_i[4:0]})) | reg2_i >> reg1_i[4:0];
 
     // overflow?
-    assign overflow_add = ((!reg1_i[31] && !reg2_i[31]) && res_add[31]) || ((reg1_i[31] && reg2_i[31]) && (!res_add[31]));
+    assign reg1_e = {reg1_i[31], reg1_i[31:0]};
+    assign reg2_e = {reg2_i[31], reg2_i[31:0]};
+
+    assign res_add_e = reg1_e + reg2_e;
+
+    assign overflow_add = (reg1_i[31] ~^ reg2_i[31]) && (res_add_e[32] ^ res_add_e[31]);
+
+    
+    assign res_sub_e = reg1_e + reg2_n_e;
+    assign overflow_sub = (reg1_i[31] ~^ reg2_n[31]) && (res_sub_e[32] ^ res_sub_e[31]);
     
     
     
@@ -67,9 +88,13 @@ module ex(
     always @ (*) begin
         wd_o <= wd_i;       // addr of the reg we will write
     	// ignore if overflow
-    	if((aluop_i == `EXE_ADD_OP|`EXE_ADDI_OP|`EXE_SUB_OP) && (overflow_add == 1'b1)) begin
+    	if((aluop_i == `EXE_ADD_OP | `EXE_ADDI_OP) && (overflow_add == 1'b1)) begin
     		wreg_o <= `WriteDisable;
-    	end else begin
+    	end 
+        else if(aluop_i == `EXE_SUB_OP && overflow_sub == 1'b1) begin
+            wreg_o <= `WriteDisable;
+        end
+        else begin
     		wreg_o <= wreg_i;
     	end
         case(aluop_i)

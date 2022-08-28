@@ -1,4 +1,5 @@
 // module IF_ID
+`include "defines.v"
 
 module if_id(
     input wire clk,
@@ -7,6 +8,9 @@ module if_id(
     // signal from if
     input wire[31:0] if_pc,
     input wire[31:0] if_inst,
+
+    // branch flush
+    input wire flush,
 
 
     // signal in id
@@ -20,6 +24,10 @@ module if_id(
             id_pc <= `ZeroWord;
             id_inst <= `ZeroWord;
 
+        end
+        else if(flush == 1'b1) begin
+            id_pc <= `ZeroWord;
+            id_inst <= `ZeroWord;
         end
         else begin
             id_pc <= if_pc;

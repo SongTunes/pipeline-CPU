@@ -31,7 +31,7 @@ module id(
 	
 	// branch info to PC
 	output reg 					        branch_flag_o,
-	output reg[31:0]			            branch_target_addr_o,
+	output reg[31:0]			        branch_target_addr_o,
 	
     // info to EX
     output reg[4:0]                     aluop_o,
@@ -40,7 +40,9 @@ module id(
     output reg[31:0]                    reg2_o,
     output reg[4:0]                     wd_o,  // the id of the reg we will wb, its value depends on the instruction.
     output reg                          wreg_o,
-	output wire[31:0]                   inst_o
+	output wire[31:0]                   inst_o,
+
+    output reg                          flush
 );
     // 
     wire[5:0] op = inst_i[31:26];
@@ -63,7 +65,7 @@ module id(
     always @ (*) begin
         if(rst == `RstEnable) begin
             aluop_o <=  `EXE_NOP_OP;
-            //alusel_o <= `EXE_RES_NOP;
+         
             wd_o    <=  5'b00000;
             wreg_o  <=  `WriteDisable;
             reg1_read_o <=  1'b0;
@@ -73,10 +75,11 @@ module id(
             imm         <=  32'h0;
     		branch_target_addr_o <= `ZeroWord;
     		branch_flag_o <= `NotBranch;
+            flush <= `NotFlush;
         end 
         else begin
             aluop_o <=  `EXE_NOP_OP;
-            //alusel_o <= `EXE_RES_NOP;
+          
             wd_o    <=  inst_i[15:11];
             wreg_o  <=  `WriteDisable;
             reg1_read_o <=  1'b0;
@@ -86,6 +89,7 @@ module id(
             imm         <=  `ZeroWord;    
     		branch_target_addr_o <= `ZeroWord;
     		branch_flag_o <= `NotBranch;
+            flush <= `NotFlush;
     
             case(op)
                 `INST_FUNC:  begin  // special
@@ -188,17 +192,14 @@ module id(
                                     reg1_read_o <= 1'b1;
                                     reg2_read_o <= 1'b1;          
                                 end 
-                                
-                                
-    					        default : begin
-                                end
-                            endcase
-                        end
-
-
+                   
+                            
+                        
+                        
                         default : begin
                         end
                     endcase
+                        
                 end
                 `INST_ORI : begin
                     wreg_o  <=  `WriteEnable;  // ori need write enable
@@ -209,25 +210,27 @@ module id(
                     imm <=  {16'h0, inst_i[15:0]};  // 0 expend
                     wd_o <= inst_i[20:16];  // reg id we are going to write
                 end
-                `INST_LUI:begin          //lui
+                `INST_LUI : begin          // lui
                     wreg_o  <=  `WriteEnable;
                     aluop_o <=  `EXE_OR_OP;
-                    //alusel_o<=  `EXE_RES_LOGIC;
+                
                     reg1_read_o <= 1'b1;
                     reg2_read_o <= 1'b0;
                     imm <=  {inst_i[15:0], 16'h0};  // low 16b = 0
                     wd_o <= inst_i[20:16];  // rt
                 end
-    			`INST_J:			begin
+                `INST_J : begin
     		  		wreg_o <= `WriteDisable;		
     				aluop_o <= `EXE_J_OP;
     		  		//alusel_o <= `EXE_RES_JUMP_BRANCH; 
     				reg1_read_o <= 1'b0;	
     				reg2_read_o <= 1'b0;
     			    branch_target_addr_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
-    			    branch_flag_o <= `Branch;	  	
+    			    branch_flag_o <= `Branch;	  
+                    // flush the pipeline
+                    flush <= `Flush;  	
     			end
-    			`INST_BEQ:			begin
+    			`INST_BEQ : begin
     		  		wreg_o <= `WriteDisable;		
     				aluop_o <= `EXE_BEQ_OP;
     		  		//alusel_o <= `EXE_RES_JUMP_BRANCH; 
@@ -235,10 +238,12 @@ module id(
     				reg2_read_o <= 1'b1;
     		  		if(reg1_o == reg2_o) begin
     			    	branch_target_addr_o <= pc_plus_4 + imm_sll2_signedext;
-    			    	branch_flag_o <= `Branch;	  	
+    			    	branch_flag_o <= `Branch;	
+                        // flush the pipeline
+                        flush <= `Flush;  	
     			    end
     			end
-    			`INST_LW:			begin
+    			`INST_LW : begin
     		  		wreg_o <= `WriteEnable;		
     				aluop_o <= `EXE_LW_OP;
     		  		//alusel_o <= `EXE_RES_LOAD_STORE; 
@@ -246,7 +251,7 @@ module id(
     				reg2_read_o <= 1'b0;	  	
     				wd_o <= inst_i[20:16]; 
     			end
-    			`INST_SW:			begin
+    			`INST_SW : begin
     		  		wreg_o <= `WriteDisable;		
     				aluop_o <= `EXE_SW_OP;
     		  		reg1_read_o <= 1'b1;	
@@ -254,7 +259,7 @@ module id(
     		  		//alusel_o <= `EXE_RES_LOAD_STORE; 
     			end
     			
-    			`INST_BNE:			begin
+    			`INST_BNE : begin
     		  		wreg_o <= `WriteDisable;		
     				aluop_o <= `EXE_BNE_OP;
     		  		//alusel_o <= `EXE_RES_JUMP_BRANCH; 
@@ -262,23 +267,25 @@ module id(
     				reg2_read_o <= 1'b1;
     		  		if(reg1_o != reg2_o) begin
     			    	branch_target_addr_o <= pc_plus_4 + imm_sll2_signedext;
-    			    	branch_flag_o <= `Branch;	  	
+    			    	branch_flag_o <= `Branch;	
+                        // flush the pipeline
+                        flush <= `Flush;    	
     			    end
     			end
-    			`INST_ADDI:          begin
+    			`INST_ADDI : begin
     				wreg_o <= `WriteEnable;		
     				aluop_o <= `EXE_ADDI_OP;
-    		  		//alusel_o <= `EXE_RES_ARITHMETIC;		
-    				reg1_read_o <= 1'b1;//1:reg	
-    				reg2_read_o <= 1'b0;//0:imm
+    		  	
+    				reg1_read_o <= 1'b1;  // 1:reg	
+    				reg2_read_o <= 1'b0;  // 0:imm
     			end
     			
-    			`INST_ADDIU:          begin
+    			`INST_ADDIU : begin
     				wreg_o <= `WriteEnable;		
     				aluop_o <= `EXE_ADDIU_OP;
-    		  		//alusel_o <= `EXE_RES_ARITHMETIC;		
-    				reg1_read_o <= 1'b1;//1:reg	
-    				reg2_read_o <= 1'b0;//0:imm
+    		  		
+    				reg1_read_o <= 1'b1;  // 1:reg	
+    				reg2_read_o <= 1'b0;  // 0:imm
     			end
     			
     			`INST_XORI:          begin
