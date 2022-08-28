@@ -21,11 +21,10 @@ module mycpu(
     wire[31:0] id_pc_i;
     wire[31:0] id_inst_i;
 
-
+    wire       flush;
 
     // connect ID and ID_EX
     wire[4:0]       id_aluop_o;
-    //wire[2:0]     id_alusel_o;
     wire[31:0]      id_reg1_o;
     wire[31:0]      id_reg2_o;
     wire            id_wreg_o;
@@ -34,7 +33,6 @@ module mycpu(
 
     // connect ID_EX and EX
     wire[4:0]       ex_aluop_i;
-    //wire[2:0]     ex_alusel_i;
     wire[31:0]      ex_reg1_i;
     wire[31:0]      ex_reg2_i;
     wire            ex_wreg_i;
@@ -125,6 +123,9 @@ module mycpu(
         .rst(rstn),
         .if_pc(pc),
         .if_inst(inst_rom_rdata),
+
+        .flush(flush),
+
         .id_pc(id_pc_i),
         .id_inst(id_inst_i)
 
@@ -163,7 +164,9 @@ module mycpu(
 
     	
     	.branch_flag_o(id_branch_flag_o),  
-    	.branch_target_addr_o(id_branch_target_addr_o)
+    	.branch_target_addr_o(id_branch_target_addr_o),
+
+        .flush(flush)
 
         
     );
@@ -173,7 +176,7 @@ module mycpu(
         .clk(clk),  .rst(rstn),
         // info from ID
         .id_aluop(id_aluop_o),
-        //.id_alusel(id_alusel_o),
+
         .id_reg1(id_reg1_o),
         .id_reg2(id_reg2_o),
         .id_wd(id_wd_o),
@@ -182,7 +185,7 @@ module mycpu(
 
         // info to EX
         .ex_aluop(ex_aluop_i),
-        //.ex_alusel(ex_alusel_i),
+
         .ex_reg1(ex_reg1_i),
         .ex_reg2(ex_reg2_i),
         .ex_wd(ex_wd_i),
@@ -195,7 +198,7 @@ module mycpu(
         .rst(rstn),
         // info from ID_EX
         .aluop_i(ex_aluop_i),   
-        //.alusel_i(ex_alusel_i),
+
         .reg1_i(ex_reg1_i),     
         .reg2_i(ex_reg2_i),
         .wd_i(ex_wd_i),         
