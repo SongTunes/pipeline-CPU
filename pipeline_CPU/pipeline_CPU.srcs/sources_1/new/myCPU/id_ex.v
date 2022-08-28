@@ -3,6 +3,8 @@
 In id_ex module, we pass the info we get in ID module, 
 after a clk cycle, to EX module.
 */
+`include "defines.v"
+
 module id_ex(
     input wire                      clk,
     input wire                      rst,

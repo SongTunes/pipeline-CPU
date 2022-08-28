@@ -4,6 +4,8 @@ In EX_MEM, we pass the info(calculate result)
 to MEM module after a clk cycle.
 
 */
+`include "defines.v"
+
 module ex_mem(
 
     input wire clk,

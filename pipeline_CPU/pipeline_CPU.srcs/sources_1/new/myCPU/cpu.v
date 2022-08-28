@@ -64,8 +64,8 @@ module mycpu(
 
 
     // connect EX_MEM and MEM
-    wire            ex_wreg_i;
-    wire[4:0]       ex_wd_i;
+    // wire            ex_wreg_i;
+    // wire[4:0]       ex_wd_i;
     wire[31:0]      ex_wdata_i;
 
 

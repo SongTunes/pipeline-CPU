@@ -20,7 +20,7 @@ module mem(
 	// info to WB
 	output reg[4:0]      			wd_o,
 	output reg                   	wreg_o,
-	output reg[31:0]			 	wdata_o,
+	output reg[31:0]			 	    wdata_o,
 	
 	// info from memory
 	input wire[31:0]          		mem_data_i,

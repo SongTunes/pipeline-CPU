@@ -27,9 +27,10 @@ module ex(
 
     wire[31:0]                   res_or;		// ans of or
     wire[31:0]                   res_add; // ans of math
-    
-    wire                         overflow_add;		    
-
+    wire[31:0]                   res_sll; // ans of sll
+    wire[31:0]                   res_srl; // ans of srl
+    wire                         overflow_add;		
+    wire[5:0]                    sa; //offset of sll or srl    
     // -----
     // pass aluop to MEM
     assign aluop_o = aluop_i;
@@ -41,7 +42,9 @@ module ex(
     
     //reg2_i: the data of instruction sw
     assign reg2_o = reg2_i;
-    
+
+    // sa: offfset
+    assign sa = reg1_i[10:6];    
     
     // calculate
     assign res_add = reg1_i + reg2_i;
@@ -50,7 +53,9 @@ module ex(
     assign res_nor = ~(reg1_i | reg2_i);
     assign res_or = reg1_i | reg2_i;
     assign res_xor = reg1_i ^ reg2_i;
-    assign res_srl = reg2_i >> reg1_i[4:0];
+    assign res_sll = reg2_i << sa;
+    //assign res_srl = reg2_i >> reg1_i[4:0];
+    assign res_srl = reg2_i >> sa;
     assign res_sra = ({32{reg2_i[31]}}<<(6'd32-{1'b0,reg1_i[4:0]})) | reg2_i >> reg1_i[4:0];
 
     // overflow?
@@ -62,7 +67,7 @@ module ex(
     always @ (*) begin
         wd_o <= wd_i;       // addr of the reg we will write
     	// ignore if overflow
-    	if((aluop_i == `EXE_ADD_OP) && (overflow_add == 1'b1)) begin
+    	if((aluop_i == `EXE_ADD_OP|`EXE_ADDI_OP|`EXE_SUB_OP) && (overflow_add == 1'b1)) begin
     		wreg_o <= `WriteDisable;
     	end else begin
     		wreg_o <= wreg_i;
@@ -91,6 +96,18 @@ module ex(
     		end
     		`EXE_SRA_OP : begin
     			wdata_o <= res_sra;
+    		end
+            `EXE_SLL_OP : begin
+                wdata_o <= res_sll;
+            end
+     		`EXE_ADDI_OP : begin
+    			wdata_o <= res_add;
+    		end
+    		`EXE_ADDIU_OP : begin
+    			wdata_o <= res_add;
+    		end
+    		`EXE_ADDU_OP : begin
+    			wdata_o <= res_add;
     		end
             default : begin
                 wdata_o <= `ZeroWord;
