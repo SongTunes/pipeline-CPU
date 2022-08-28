@@ -25,6 +25,10 @@
 `define FUNC_SRL        6'b000010
 `define FUNC_SRLV       6'b000110  // SRLV'
 `define FUNC_SRAV       6'b000111  // SRAV'
+`define FUNC_SLT        6'b101010
+`define FUNC_SLTU       6'b101011
+`define FUNC_CLZ        6'b100000
+`define FUNC_CLO        6'b100001
 
 // opcode
 //`define INSR_OR         6'b100101  
@@ -37,10 +41,15 @@
 `define INST_SLL        6'b000000
 `define INST_SLT        6'b000000
 `define INST_NOP        6'b000000
-`define INST_FUNC       6'b000000
 `define INST_BNE        6'b000101
 `define INST_ADDI       6'b001000
 `define INST_ADDIU      6'b001001
+`define INST_XORI       6'b001110
+`define INST_SLTI       6'b001010
+`define INST_SLTIU      6'b001011
+
+`define INST_FUNC       6'b000000
+`define INST_FUNC2      6'b011100
 
 // AluOp
 `define EXE_NOP_OP      0
@@ -64,4 +73,12 @@
 `define EXE_XOR_OP      18
 `define EXE_NOR_OP      19
 `define EXE_SRA_OP      20
+
+`define EXE_SLT_OP      21
+`define EXE_SLTU_OP     22
+`define EXE_SLTI_OP     23
+`define EXE_SLTIU_OP    24
+`define EXE_CLZ_OP      25
+`define EXE_CLO_OP      26
+
 

@@ -176,8 +176,18 @@ module id(
                                     reg1_read_o <= 1'b0;
                                     reg2_read_o <= 1'b1;          
                                 end
-                                
-                                 
+                                `FUNC_SLT: begin
+                                    wreg_o <= `WriteEnable;
+                                    aluop_o <= `EXE_SLT_OP;
+                                    reg1_read_o <= 1'b1;
+                                    reg2_read_o <= 1'b1;          
+                                end
+                                `FUNC_SLTU: begin
+                                    wreg_o <= `WriteEnable;
+                                    aluop_o <= `EXE_SLTU_OP;
+                                    reg1_read_o <= 1'b1;
+                                    reg2_read_o <= 1'b1;          
+                                end 
                                 
                                 
     					        default : begin
@@ -271,6 +281,55 @@ module id(
     				reg2_read_o <= 1'b0;//0:imm
     			end
     			
+    			`INST_XORI:          begin
+    				wreg_o <= `WriteEnable;		
+    				aluop_o <= `EXE_XOR_OP;
+    		  		//alusel_o <= `EXE_RES_ARITHMETIC;		
+    				reg1_read_o <= 1'b1;//1:reg	
+    				reg2_read_o <= 1'b0;//0:imm
+    				imm <=  {16'h0, inst_i[15:0]};  // 0 expend
+                    wd_o <= inst_i[20:16];  // reg id we are going to write
+    			end
+    			
+    			`INST_SLTI:          begin
+    				wreg_o <= `WriteEnable;		
+    				aluop_o <= `EXE_SLT_OP;
+    		  		//alusel_o <= `EXE_RES_ARITHMETIC;		
+    				reg1_read_o <= 1'b1;//1:reg	
+    				reg2_read_o <= 1'b0;//0:imm
+    				imm <=  {{16{inst_i[15]}}, inst_i[15:0]};  // 0 expend
+                    wd_o <= inst_i[20:16];  // reg id we are going to write
+    			end
+    			`INST_SLTIU:          begin
+    				wreg_o <= `WriteEnable;		
+    				aluop_o <= `EXE_SLTU_OP;
+    		  		//alusel_o <= `EXE_RES_ARITHMETIC;		
+    				reg1_read_o <= 1'b1;//1:reg	
+    				reg2_read_o <= 1'b0;//0:imm
+    				imm <=  {{16{inst_i[15]}}, inst_i[15:0]};  // 0 expend
+                    wd_o <= inst_i[20:16];  // reg id we are going to write
+    			end
+    			
+    			`INST_FUNC2:          begin
+    			 case ( op3 )
+    			     `FUNC_CLZ: begin
+    			         wreg_o <= `WriteEnable;		
+                         aluop_o <= `EXE_CLZ_OP;
+                         //alusel_o <= `EXE_RES_ARITHMETIC;		
+                         reg1_read_o <= 1'b1;//1:reg	
+                         reg2_read_o <= 1'b0;//0:imm
+    			     end
+    			     `FUNC_CLO: begin
+    			         wreg_o <= `WriteEnable;		
+                         aluop_o <= `EXE_CLO_OP;
+                         //alusel_o <= `EXE_RES_ARITHMETIC;		
+                         reg1_read_o <= 1'b1;//1:reg	
+                         reg2_read_o <= 1'b0;//0:imm
+    			     end
+    			     default: begin
+    			     end
+    			 endcase
+    			end
     			default:begin
     			end
             endcase
