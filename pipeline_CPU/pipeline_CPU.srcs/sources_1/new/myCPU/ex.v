@@ -29,6 +29,10 @@ module ex(
     wire[31:0]                   res_add; // ans of add
     wire[31:0]                   res_sll; // ans of sll
     wire[31:0]                   res_srl; // ans of srl
+    wire[31:0]                   res_slt_stli;
+    wire[31:0]                   res_sltu_stliu;
+    wire[31:0]                   res_clz;
+    wire[31:0]                   res_clo;
 
     wire[32:0]                   res_add_e;
     wire[32:0]                   res_sub_e;
@@ -68,7 +72,76 @@ module ex(
     assign res_sll = reg2_i << sa;
     //assign res_srl = reg2_i >> reg1_i[4:0];
     assign res_srl = reg2_i >> sa;
-    assign res_sra = ({32{reg2_i[31]}}<<(6'd32-{1'b0,reg1_i[4:0]})) | reg2_i >> reg1_i[4:0];
+    assign res_sra = ({32{reg2_i[31]}}<<(6'd32-{1'b0,reg1_i[4:0]})) | reg2_i >> reg1_i[4:0]; 
+    
+    assign result_sum = reg1_i + (~reg2_i) + 1;  // use complement to calculate difference
+    assign res_slt_slti = ((reg1_i[31] && !reg2_i[31]) || (!reg1_i[31] && !reg2_i[31] && result_sum[31]) || (reg1_i[31] && reg2_i[31] && result_sum[31])) ? 1 : 0;
+    assign res_sltu_stliu = (reg1_i < reg2_i) ? 1 : 0;
+    assign res1_i_not = ~reg1_i;
+    assign res_clz = reg1_i_not[31] ? 0 :
+                     reg1_i_not[30] ? 1 :
+                     reg1_i_not[29] ? 2 :
+                     reg1_i_not[28] ? 3 :
+                     reg1_i_not[27] ? 4 :
+                     reg1_i_not[26] ? 5 :
+                     reg1_i_not[25] ? 6 :
+                     reg1_i_not[24] ? 7 :
+                     reg1_i_not[23] ? 8 :
+                     reg1_i_not[22] ? 9 :
+                     reg1_i_not[21] ? 10 :
+                     reg1_i_not[20] ? 11 :
+                     reg1_i_not[19] ? 12 :
+                     reg1_i_not[18] ? 13 :
+                     reg1_i_not[17] ? 14 :
+                     reg1_i_not[16] ? 15 :
+                     reg1_i_not[15] ? 16 :
+                     reg1_i_not[14] ? 17 :
+                     reg1_i_not[13] ? 18 :
+                     reg1_i_not[12] ? 19 :
+                     reg1_i_not[11] ? 20 :
+                     reg1_i_not[10] ? 21 :
+                     reg1_i_not[9] ? 22 :
+                     reg1_i_not[8] ? 23 :
+                     reg1_i_not[7] ? 24 :
+                     reg1_i_not[6] ? 25 :
+                     reg1_i_not[5] ? 26 :
+                     reg1_i_not[4] ? 27 :
+                     reg1_i_not[3] ? 28 :
+                     reg1_i_not[2] ? 29 :
+                     reg1_i_not[1] ? 30 :
+                     reg1_i_not[0] ? 31 : 32;
+    assign res_clo = reg1_i[31] ? 0 :
+                     reg1_i[30] ? 1 :
+                     reg1_i[29] ? 2 :
+                     reg1_i[28] ? 3 :
+                     reg1_i[27] ? 4 :
+                     reg1_i[26] ? 5 :
+                     reg1_i[25] ? 6 :
+                     reg1_i[24] ? 7 :
+                     reg1_i[23] ? 8 :
+                     reg1_i[22] ? 9 :
+                     reg1_i[21] ? 10 :
+                     reg1_i[20] ? 11 :
+                     reg1_i[19] ? 12 :
+                     reg1_i[18] ? 13 :
+                     reg1_i[17] ? 14 :
+                     reg1_i[16] ? 15 :
+                     reg1_i[15] ? 16 :
+                     reg1_i[14] ? 17 :
+                     reg1_i[13] ? 18 :
+                     reg1_i[12] ? 19 :
+                     reg1_i[11] ? 20 :
+                     reg1_i[10] ? 21 :
+                     reg1_i[9] ? 22 :
+                     reg1_i[8] ? 23 :
+                     reg1_i[7] ? 24 :
+                     reg1_i[6] ? 25 :
+                     reg1_i[5] ? 26 :
+                     reg1_i[4] ? 27 :
+                     reg1_i[3] ? 28 :
+                     reg1_i[2] ? 29 :
+                     reg1_i[1] ? 30 :
+                     reg1_i[0] ? 31 : 32;
 
     // overflow?
     assign reg1_e = {reg1_i[31], reg1_i[31:0]};
@@ -134,6 +207,24 @@ module ex(
     		`EXE_ADDU_OP : begin
     			wdata_o <= res_add;
     		end
+            `EXE_STL_OP : begin 
+                wdata_o <= res_stl_stli;
+            end
+            `EXE_STLI_OP : begin 
+                wdata_o <= res_stl_stli;
+            end
+            `EXE_STLU_OP : begin 
+                wdata_o <= res_stlu_stliu;
+            end
+            `EXE_STLIU_OP : begin 
+                wdata_o <= res_stlu_stliu;
+            end
+            `EXE_CLZ_OP : begin
+                wdata_o <= res_clz;
+            end
+            `EXE_CLO_OP : begin
+                wdata_o <= res_clo;
+            end
             default : begin
                 wdata_o <= `ZeroWord;
             end

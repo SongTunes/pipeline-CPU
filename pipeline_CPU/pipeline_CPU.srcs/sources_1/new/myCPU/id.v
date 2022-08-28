@@ -189,11 +189,7 @@ module id(
                                     aluop_o <= `EXE_SLTU_OP;
                                     reg1_read_o <= 1'b1;
                                     reg2_read_o <= 1'b1;          
-                                end 
-                   
-                            
-                        
-                        
+                                end                         
                         default : begin
                         end
                     endcase
