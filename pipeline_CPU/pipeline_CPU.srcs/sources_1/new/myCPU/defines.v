@@ -78,7 +78,7 @@
 
 `define EXE_SLT_OP      21
 `define EXE_SLTU_OP     22
-`define EXE_SLTI_OP     23lt
+`define EXE_SLTI_OP     23
 `define EXE_SLTIU_OP    24
 `define EXE_CLZ_OP      25
 `define EXE_CLO_OP      26

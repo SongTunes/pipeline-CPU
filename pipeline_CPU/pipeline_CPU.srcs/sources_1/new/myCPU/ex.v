@@ -29,8 +29,8 @@ module ex(
     wire[31:0]                   res_add; // ans of add
     wire[31:0]                   res_sll; // ans of sll
     wire[31:0]                   res_srl; // ans of srl
-    wire[31:0]                   res_slt_stli;
-    wire[31:0]                   res_sltu_stliu;
+    wire[31:0]                   res_slt_slti;
+    wire[31:0]                   res_sltu_sltiu;
     wire[31:0]                   res_clz;
     wire[31:0]                   res_clo;
 
@@ -47,6 +47,8 @@ module ex(
     wire[32:0]                   reg2_e;
     wire[31:0]                   reg2_n;
     wire[32:0]                   reg2_n_e;
+    wire[31:0]                   result_sum;
+    wire[31:0]                   reg1_i_not; 
     // -----
     // pass aluop to MEM
     assign aluop_o = aluop_i;
@@ -77,7 +79,7 @@ module ex(
     assign result_sum = reg1_i + (~reg2_i) + 1;  // use complement to calculate difference
     assign res_slt_slti = ((reg1_i[31] && !reg2_i[31]) || (!reg1_i[31] && !reg2_i[31] && result_sum[31]) || (reg1_i[31] && reg2_i[31] && result_sum[31])) ? 1 : 0;
     assign res_sltu_stliu = (reg1_i < reg2_i) ? 1 : 0;
-    assign res1_i_not = ~reg1_i;
+    assign reg1_i_not = ~reg1_i;
     assign res_clz = reg1_i_not[31] ? 0 :
                      reg1_i_not[30] ? 1 :
                      reg1_i_not[29] ? 2 :
@@ -207,17 +209,17 @@ module ex(
     		`EXE_ADDU_OP : begin
     			wdata_o <= res_add;
     		end
-            `EXE_STL_OP : begin 
-                wdata_o <= res_stl_stli;
+            `EXE_SLT_OP : begin 
+                wdata_o <= res_slt_slti;
             end
-            `EXE_STLI_OP : begin 
-                wdata_o <= res_stl_stli;
+            `EXE_SLTI_OP : begin 
+                wdata_o <= res_slt_slti;
             end
-            `EXE_STLU_OP : begin 
-                wdata_o <= res_stlu_stliu;
+            `EXE_SLTU_OP : begin 
+                wdata_o <= res_sltu_sltiu;
             end
-            `EXE_STLIU_OP : begin 
-                wdata_o <= res_stlu_stliu;
+            `EXE_SLTIU_OP : begin 
+                wdata_o <= res_sltu_sltiu;
             end
             `EXE_CLZ_OP : begin
                 wdata_o <= res_clz;
