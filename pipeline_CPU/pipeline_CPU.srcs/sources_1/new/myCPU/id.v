@@ -93,8 +93,6 @@ module id(
     
             case(op)
                 `INST_FUNC:  begin  // special
-                    case(op2)
-                        5'b00000 : begin  // add
                             case(op3)
     				            `FUNC_ADD: begin
     				                wreg_o <= `WriteEnable;		
