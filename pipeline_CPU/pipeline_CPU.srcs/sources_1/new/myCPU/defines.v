@@ -6,7 +6,9 @@
 `define ReadEnable      1'b1    
 `define ReadDisable     1'b0     
 `define Branch          1'b1	
-`define NotBranch       1'b0			
+`define NotBranch       1'b0	
+`define Flush           1'b1
+`define NotFlush        1'b0		
 `define ZeroWord        32'h00000000
 `define RegNum          32               // reg num
 `define RegNumLog2      5            // num of reg id

@@ -75,6 +75,7 @@ module id(
             imm         <=  32'h0;
     		branch_target_addr_o <= `ZeroWord;
     		branch_flag_o <= `NotBranch;
+            flush <= `NotFlush;
         end 
         else begin
             aluop_o <=  `EXE_NOP_OP;
@@ -88,6 +89,7 @@ module id(
             imm         <=  `ZeroWord;    
     		branch_target_addr_o <= `ZeroWord;
     		branch_flag_o <= `NotBranch;
+            flush <= `NotFlush;
     
             case(op)
                 `INST_FUNC:  begin  // special
@@ -211,7 +213,9 @@ module id(
     				reg1_read_o <= 1'b0;	
     				reg2_read_o <= 1'b0;
     			    branch_target_addr_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
-    			    branch_flag_o <= `Branch;	  	
+    			    branch_flag_o <= `Branch;	  
+                    // flush the pipeline
+                    flush <= `Flush;  	
     			end
     			`INST_BEQ : begin
     		  		wreg_o <= `WriteDisable;		
@@ -221,7 +225,9 @@ module id(
     				reg2_read_o <= 1'b1;
     		  		if(reg1_o == reg2_o) begin
     			    	branch_target_addr_o <= pc_plus_4 + imm_sll2_signedext;
-    			    	branch_flag_o <= `Branch;	  	
+    			    	branch_flag_o <= `Branch;	
+                        // flush the pipeline
+                        flush <= `Flush;  	
     			    end
     			end
     			`INST_LW : begin
@@ -248,7 +254,9 @@ module id(
     				reg2_read_o <= 1'b1;
     		  		if(reg1_o != reg2_o) begin
     			    	branch_target_addr_o <= pc_plus_4 + imm_sll2_signedext;
-    			    	branch_flag_o <= `Branch;	  	
+    			    	branch_flag_o <= `Branch;	
+                        // flush the pipeline
+                        flush <= `Flush;    	
     			    end
     			end
     			`INST_ADDI : begin
