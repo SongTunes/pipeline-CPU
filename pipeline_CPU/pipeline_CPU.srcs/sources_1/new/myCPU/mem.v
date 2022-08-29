@@ -17,6 +17,8 @@ module mem(
 	input wire[31:0]          		mem_addr_i,
 	input wire[31:0]          		reg2_i,
 	
+	input wire 				        is_in_delayslot_i,
+	
 	// info to WB
 	output reg[4:0]      			wd_o,
 	output reg                   	wreg_o,
@@ -28,7 +30,10 @@ module mem(
 	// info to memory
 	output reg[31:0]          		mem_addr_o,
 	output wire					 	mem_we_o,
-	output reg[31:0]          		mem_data_o
+	output reg[31:0]          		mem_data_o,
+	
+	output wire 			            is_in_delayslot_o
+	
 );
 
     
@@ -36,6 +41,7 @@ module mem(
     
     assign mem_we_o = mem_we ;
     
+    assign is_in_delayslot_o = is_in_delayslot_i;
     	
     	always @ (*) begin
     		if(rst == `RstEnable) begin

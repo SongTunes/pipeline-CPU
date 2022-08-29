@@ -83,4 +83,15 @@
 `define EXE_CLZ_OP      25
 `define EXE_CLO_OP      26
 
+// AluSel
+`define EXE_RES_NOP	   3'b000
+
+// Pauses in the pipeline
+`define StallEnable 	1'b1
+`define StallDisable 	1'b0
+`define StallNone 		6'b000000
+`define StallFromID 	6'b000111
+`define StallFromEX 	6'b001111
+
+`define NotInDelaySlot 		1'b0
 

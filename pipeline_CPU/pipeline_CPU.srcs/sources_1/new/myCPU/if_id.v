@@ -10,6 +10,7 @@ module if_id(
     input wire[31:0] if_inst,
 
     // branch flush
+    input wire[5:0] stall,
     input wire flush,
 
 
@@ -29,10 +30,14 @@ module if_id(
             id_pc <= `ZeroWord;
             id_inst <= `ZeroWord;
         end
-        else begin
+        else if (stall[1] == `StallEnable && stall[2] == `StallDisable) begin
+            id_pc <= `ZeroWord;
+            id_inst <= `ZeroWord;
+        end
+        else if (stall[1] == `StallDisable) begin
             id_pc <= if_pc;
             id_inst <= if_inst;
-
         end
+
     end
 endmodule

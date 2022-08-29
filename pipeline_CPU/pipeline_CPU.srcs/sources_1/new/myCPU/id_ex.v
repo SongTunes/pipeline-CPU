@@ -17,7 +17,7 @@ module id_ex(
     input wire[4:0]                 id_wd,
     input wire                      id_wreg,
     input wire[31:0]                id_inst,
-
+    input wire[5:0]                 stall,
     // info we need to pass to EX
     output reg[4:0]                 ex_aluop,
     //output reg[2:0]               ex_alusel,
@@ -39,7 +39,16 @@ module id_ex(
             ex_wreg <= `WriteDisable;
             ex_inst <= `ZeroWord;
         end
-        else begin
+        else if (stall[2] == `StallEnable && stall[3] == `StallDisable) begin
+			ex_aluop <= `EXE_NOP_OP;
+			//ex_alusel <= `EXE_RES_NOP;
+			ex_reg1 <= `ZeroWord;
+			ex_reg2 <= `ZeroWord;
+			ex_wd <= 5'b00000;
+			ex_wreg <= `WriteDisable;
+			
+		end
+        else if (stall[2] == `StallDisable) begin
             ex_aluop <= id_aluop;
             //ex_alusel <= id_alusel;
             ex_reg1 <= id_reg1;

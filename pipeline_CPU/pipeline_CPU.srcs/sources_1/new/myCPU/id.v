@@ -5,6 +5,7 @@ and get some infomation we need.
 */
 
 `include "defines.v"
+
 module id(
     input wire                          rst,
     input wire[31:0]                    pc_i,  // the value of pc(the addr of inst)
@@ -21,6 +22,11 @@ module id(
     input wire                          mem_wreg_i,  // MEM
     input wire[4:0]                     mem_wd_i,
     input wire[31:0]                    mem_wdata_i,
+    
+    //solve Load delay problem
+    input wire[4:0]		        ex_aluop_i,
+    
+    input wire 					is_in_delayslot_i,
 
     // info to Regfile
     output reg                          reg1_read_o,  // control signal: read enable. imm:0 or reg:1
@@ -31,7 +37,7 @@ module id(
 	
 	// branch info to PC
 	output reg 					        branch_flag_o,
-	output reg[31:0]			        branch_target_addr_o,
+	output reg[31:0]			            branch_target_addr_o,
 	
     // info to EX
     output reg[4:0]                     aluop_o,
@@ -42,7 +48,9 @@ module id(
     output reg                          wreg_o,
 	output wire[31:0]                   inst_o,
 
-    output reg                          flush
+    output reg                          flush,
+    output reg 					        is_in_delayslot_o,
+    output wire					        stallreq		// request pipeline interrupt
 );
     // 
     wire[5:0] op = inst_i[31:26];
@@ -53,6 +61,12 @@ module id(
     //
     reg[31:0]   imm;
     
+    //Indicates whether the register 1/2 to be read is related to the load of the previous instruction
+    reg stallreq_for_reg1_loadrelate;
+	reg stallreq_for_reg2_loadrelate;
+	// Whether the previous one is a load instruction
+    wire pre_inst_is_load;
+    
     wire[31:0] pc_plus_4;
     wire[31:0] imm_sll2_signedext; 
     
@@ -60,6 +74,14 @@ module id(
     assign imm_sll2_signedext = {{14{inst_i[15]}}, inst_i[15:0], 2'b00 };  
     
     assign inst_o = inst_i;
+    
+    // According to the value of the input signal ex_aluop_i, 
+    //determine whether the previous instruction is a load instruction, 
+    //if so, set pre_inst_is_load to 1, otherwise set to 0
+    assign pre_inst_is_load = (ex_aluop_i == `EXE_LW_OP) ? 1'b1 : 1'b0;
+							   
+							   
+	assign stallreq = stallreq_for_reg1_loadrelate | stallreq_for_reg2_loadrelate;
     
     // translation
     always @ (*) begin
@@ -189,7 +211,11 @@ module id(
                                     aluop_o <= `EXE_SLTU_OP;
                                     reg1_read_o <= 1'b1;
                                     reg2_read_o <= 1'b1;          
-                                end                         
+                                end 
+                   
+                            
+                        
+                        
                         default : begin
                         end
                     endcase
@@ -337,6 +363,7 @@ module id(
         end
     end
     
+    
     // get the op num1
     always @ (*) begin
         if(rst == `RstEnable) begin
@@ -384,4 +411,71 @@ module id(
             reg2_o <= `ZeroWord;
         end
     end
+    
+    //If the previous instruction is a load instruction,
+    // and the load instruction to be loaded into the destination register is the general register read
+    // by the current instruction through the regfile module read port 1, 
+    //it means that there is a load related
+    always @(*) begin
+		stallreq_for_reg1_loadrelate <= `StallDisable;
+		if (rst == `RstEnable) begin
+			reg1_o <= `ZeroWord;
+		end
+		else if (reg1_read_o == `ReadEnable) begin
+			if (pre_inst_is_load == 1'b1 && ex_wd_i == reg1_addr_o) begin
+				stallreq_for_reg1_loadrelate <= `StallEnable;
+			end
+/*			else if (ex_wreg_i == `WriteEnable && ex_wd_i == reg1_addr_o) begin
+				reg1_o <= ex_wdata_i;
+			end
+			else if (mem_wreg_i == `WriteEnable && mem_wd_i == reg1_addr_o) begin
+				reg1_o <= mem_wdata_i;
+			end
+			else begin
+				reg1_o <= rd1_i;
+			end*/
+		end
+/*		else if (reg1_read_o == `ReadDisable) begin
+			reg1_o <= imm;
+		end
+		else begin
+			reg1_o <= `ZeroWord;
+		end*/
+	end
+    
+	always @(*) begin
+		stallreq_for_reg2_loadrelate <= `StallDisable;
+		if (rst == `RstEnable) begin
+			reg2_o <= `ZeroWord;
+		end
+		else if (reg2_read_o == `ReadEnable) begin
+			if (pre_inst_is_load == 1'b1 && ex_wd_i == reg2_addr_o) begin
+				stallreq_for_reg2_loadrelate <= `StallEnable;
+			end
+			/*else if (ex_wreg_i == `WriteEnable && ex_wd_i == reg2_addr_o) begin
+				reg2_o <= ex_wdata_i;
+			end
+			else if (mem_wreg_i == `WriteEnable && mem_wd_i == reg2_addr_o) begin
+				reg2_o <= mem_wdata_i;
+			end
+			else begin
+				reg2_o <= rd2_i;
+			end*/
+		end
+		/*else if (reg2_read_o == `ReadDisable) begin
+			reg2_o <= imm;
+		end
+		else begin
+			reg2_o <= `ZeroWord;
+		end*/
+	end
+	
+	always @(*) begin
+		if (rst == `RstEnable) begin
+			is_in_delayslot_o <= `NotInDelaySlot;
+		end
+		else begin
+			is_in_delayslot_o <= is_in_delayslot_i;
+		end
+	end
 endmodule

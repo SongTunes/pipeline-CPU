@@ -12,17 +12,18 @@ module ex(
     input wire[31:0]             reg2_i,
     input wire[4:0]              wd_i,
     input wire                   wreg_i,
-    input wire[31:0]		     inst_i,
-	
+    input wire[31:0]		         inst_i,
+	input wire 					is_in_delayslot_i,
     //
     output reg[4:0]              wd_o,  // addr
     output reg                   wreg_o,  // control signal
     output reg[31:0]             wdata_o,  // alu output
 
 	// pass to others
-	output wire[4:0]		     aluop_o,
+	output wire[4:0]		         aluop_o,
 	output wire[31:0]            mem_addr_o,
-	output wire[31:0]		     reg2_o
+	output wire[31:0]		     reg2_o,
+	output wire 				     is_in_delayslot_o
 );
 
     wire[31:0]                   res_or;		// ans of or
@@ -63,6 +64,9 @@ module ex(
 
     // sa: offfset
     assign sa = reg1_i[10:6];    
+    
+    
+    assign is_in_delayslot_o = is_in_delayslot_i;
     
     // calculate
     assign res_add = reg1_i + reg2_i;
