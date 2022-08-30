@@ -106,8 +106,8 @@ module id(
             wreg_o  <=  `WriteDisable;
             reg1_read_o <=  1'b0;
             reg2_read_o <=  1'b0;
-            reg1_addr_o <=  inst_i[25:21];
-            reg2_addr_o <=  inst_i[20:16];
+            reg1_addr_o <=  inst_i[25:21]; //rs
+            reg2_addr_o <=  inst_i[20:16]; //rt
             imm         <=  `ZeroWord;    
     		branch_target_addr_o <= `ZeroWord;
     		branch_flag_o <= `NotBranch;
@@ -172,28 +172,42 @@ module id(
     				                reg1_read_o <= 1'b1;	
     				                reg2_read_o <= 1'b1;
     				            end
+								`FUNC_SLLV: begin
+    				                wreg_o <= `WriteEnable;		
+    				                aluop_o <= `EXE_SLLV_OP;
+    		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
+    				                reg1_read_o <= 1'b1;	
+    				                reg2_read_o <= 1'b1;
+    				            end
     				            `FUNC_SRLV: begin
     				                wreg_o <= `WriteEnable;		
-    				                aluop_o <= `EXE_SRL_OP;
+    				                aluop_o <= `EXE_SRLV_OP;
     		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
     				                reg1_read_o <= 1'b1;	
     				                reg2_read_o <= 1'b1;
     				            end
     				            `FUNC_SRAV: begin
     				                wreg_o <= `WriteEnable;		
-    				                aluop_o <= `EXE_SRA_OP;
+    				                aluop_o <= `EXE_SRAV_OP;
     		  		                //alusel_o <= `EXE_RES_ARITHMETIC;		
     				                reg1_read_o <= 1'b1;	
     				                reg2_read_o <= 1'b1;
     				            end
-    				            `FUNC_SLL: begin
+    				             `FUNC_SLL: begin
                                     wreg_o <= `WriteEnable;
                                     aluop_o <= `EXE_SLL_OP;
                                     imm <= {16'h0, inst_i[15:0]};
                                     reg1_read_o <= 1'b0;
+                                    reg2_read_o <= 1'b1;
+								end 
+                                `FUNC_SRL: begin
+                                    wreg_o <= `WriteEnable;
+                                    aluop_o <= `EXE_SRL_OP;
+                                    imm <= {16'h0, inst_i[15:0]};
+                                    reg1_read_o <= 1'b0;
                                     reg2_read_o <= 1'b1;          
                                 end
-                                `FUNC_SRL: begin
+								`FUNC_SRA: begin
                                     wreg_o <= `WriteEnable;
                                     aluop_o <= `EXE_SRL_OP;
                                     imm <= {16'h0, inst_i[15:0]};

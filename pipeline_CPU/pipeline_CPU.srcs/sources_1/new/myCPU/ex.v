@@ -35,11 +35,16 @@ module ex(
     wire[31:0]                   res_xor; // ans of 
     wire[31:0]                   res_sll; // ans of sll
     wire[31:0]                   res_srl; // ans of srl
+    wire[31:0]                   res_sra;
+    wire[31:0]                   res_sllv;
+    wire[31:0]                   res_srlv;
+    wire[31:0]                   res_srav;
+
     wire[31:0]                   res_slt_slti;
     wire[31:0]                   res_sltu_sltiu;
     wire[31:0]                   res_clz;
     wire[31:0]                   res_clo;
-
+   
     wire[32:0]                   res_add_e;
     wire[32:0]                   res_sub_e;
 
@@ -81,13 +86,15 @@ module ex(
     assign res_or = reg1_i | reg2_i;
     assign res_xor = reg1_i ^ reg2_i;
     assign res_sll = reg2_i << sa;
-    //assign res_srl = reg2_i >> reg1_i[4:0];
     assign res_srl = reg2_i >> sa;
-    assign res_sra = ({32{reg2_i[31]}}<<(6'd32-{1'b0,reg1_i[4:0]})) | reg2_i >> reg1_i[4:0]; 
+    assign res_sra = ({32{reg2_i[31]}}<<(6'd32-{1'b0,sa})) | reg2_i >> sa ; 
+    assign res_sllv = reg2_i << reg1_i[4:0];
+    assign res_srlv = reg2_i >> reg1_i[4:0];
+    assign res_srav = ({32{reg2_i[31]}}<<(6'd32-{1'b0,reg1_i[4:0]})) | reg2_i >> reg1_i[4:0];
     
     assign result_sum = reg1_i + (~reg2_i) + 1;  // use complement to calculate difference
     assign res_slt_slti = ((reg1_i[31] && !reg2_i[31]) || (!reg1_i[31] && !reg2_i[31] && result_sum[31]) || (reg1_i[31] && reg2_i[31] && result_sum[31])) ? 1 : 0;
-    assign res_sltu_stliu = (reg1_i < reg2_i) ? 1 : 0;
+    assign res_sltu_sltiu = (reg1_i < reg2_i) ? 1 : 0;
     assign reg1_i_not = ~reg1_i;
     assign res_clz = reg1_i_not[31] ? 0 :
                      reg1_i_not[30] ? 1 :
@@ -235,6 +242,15 @@ module ex(
             end
             `EXE_CLO_OP : begin
                 wdata_o <= res_clo;
+            end
+            `EXE_SLLV_OP : begin
+                wdata_o <= res_sllv;
+            end
+            `EXE_SRLV_OP : begin
+                wdata_o <= res_srlv;
+            end
+            `EXE_SRAV_OP : begin
+                wdata_o <= res_srav;
             end
             default : begin
                 wdata_o <= `ZeroWord;
