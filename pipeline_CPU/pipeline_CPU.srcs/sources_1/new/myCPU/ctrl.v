@@ -3,9 +3,9 @@
 module ctrl (
 	input wire				rst,
 	input wire				stallreq_from_id,
-    output reg[5:0]			stall,
-	output reg[31:0]		    new_pc,
-	output reg 				flush
+    output reg[5:0]			stall
+	//output reg[31:0]		    new_pc,
+	//output reg 				flush
 );
 
 	always @(*) begin
