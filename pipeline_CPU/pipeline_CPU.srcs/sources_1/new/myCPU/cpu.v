@@ -81,9 +81,12 @@ module mycpu(
 
 
     // connect WB and Regfile
-    wire[4:0]       wb_wd;
-    wire            wb_wreg;
-    wire[31:0]      wb_wdata;
+    // wire[4:0]       wb_wd;
+    // wire            wb_wreg;
+    // wire[31:0]      wb_wdata;
+    wire[4:0]       wb_wd_i;
+    wire            wb_wreg_i;
+    wire[31:0]      wb_wdata_i;
     
     wire            id_branch_flag_o;
     wire[31:0]      id_branch_target_addr_o;
@@ -91,7 +94,7 @@ module mycpu(
     wire 			mem_is_in_delayslot_o;
     
     
-    // ?±µ CTRL ©M¨ä¥L¼Ò?
+    // ?ï¿½ï¿½ CTRL ï¿½Mï¿½ï¿½Lï¿½ï¿½?
 	wire 						stallreq_from_id;	
 	wire[31:0]				    new_pc;
 	wire[5:0]                    stall;
@@ -114,9 +117,12 @@ module mycpu(
         .clk(clk),
         .rst(rstn),
         // info from WB
-        .we(wb_wreg), 
-        .waddr(wb_wd),
-        .wdata(wb_wdata),
+        // .we(wb_wreg), 
+        // .waddr(wb_wd),
+        // .wdata(wb_wdata),
+        .we(wb_wreg_i), 
+        .waddr(wb_wd_i),
+        .wdata(wb_wdata_i),
         // info from ID
         .re1(reg1_read),    
         .raddr1(reg1_addr), 

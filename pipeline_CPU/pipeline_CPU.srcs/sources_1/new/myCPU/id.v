@@ -295,17 +295,19 @@ module id(
     			`INST_ADDI : begin
     				wreg_o <= `WriteEnable;		
     				aluop_o <= `EXE_ADDI_OP;
-    		  	
+					imm <= {16'h0, inst_i[15:0]};
     				reg1_read_o <= 1'b1;  // 1:reg	
     				reg2_read_o <= 1'b0;  // 0:imm
+					wd_o <= inst_i[20:16];
     			end
     			
     			`INST_ADDIU : begin
     				wreg_o <= `WriteEnable;		
     				aluop_o <= `EXE_ADDIU_OP;
-    		  		
+    		  		imm <= {16'h0, inst_i[15:0]};
     				reg1_read_o <= 1'b1;  // 1:reg	
     				reg2_read_o <= 1'b0;  // 0:imm
+					wd_o <= inst_i[20:16];
     			end
     			
     			`INST_XORI:          begin
