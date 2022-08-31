@@ -25,6 +25,8 @@
 `define FUNC_XOR        6'b100110  // XOR'
 `define FUNC_SLL        6'b000000
 `define FUNC_SRL        6'b000010
+`define FUNC_SRA        6'b000011
+`define FUNC_SLLV       6'b000100
 `define FUNC_SRLV       6'b000110  // SRLV'
 `define FUNC_SRAV       6'b000111  // SRAV'
 `define FUNC_SLT        6'b101010
@@ -40,8 +42,6 @@
 `define INST_BEQ        6'b000100
 `define INST_LW         6'b100011
 `define INST_SW         6'b101011
-`define INST_SLL        6'b000000
-`define INST_SLT        6'b000000
 `define INST_NOP        6'b000000
 `define INST_BNE        6'b000101
 `define INST_ADDI       6'b001000
@@ -82,6 +82,10 @@
 `define EXE_SLTIU_OP    24
 `define EXE_CLZ_OP      25
 `define EXE_CLO_OP      26
+
+`define EXE_SRLV_OP     27
+`define EXE_SRAV_OP     28
+`define EXE_SLLV_OP     29
 
 // AluSel
 `define EXE_RES_NOP	   3'b000
