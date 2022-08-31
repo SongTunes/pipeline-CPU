@@ -26,7 +26,7 @@ module if_id(
             id_inst <= `ZeroWord;
 
         end
-        else if(flush == 1'b1) begin
+        else if(flush == `Flush) begin
             id_pc <= `ZeroWord;
             id_inst <= `ZeroWord;
         end

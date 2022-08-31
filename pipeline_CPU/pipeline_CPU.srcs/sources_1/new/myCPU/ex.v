@@ -28,6 +28,11 @@ module ex(
 
     wire[31:0]                   res_or;		// ans of or
     wire[31:0]                   res_add; // ans of add
+    wire[31:0]                   res_sub; // ans of 
+    wire[31:0]                   res_and; // ans of 
+    wire[31:0]                   res_nor; // ans of 
+
+    wire[31:0]                   res_xor; // ans of 
     wire[31:0]                   res_sll; // ans of sll
     wire[31:0]                   res_srl; // ans of srl
     wire[31:0]                   res_slt_slti;

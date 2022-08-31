@@ -62,8 +62,6 @@ module mycpu(
 
 
     // connect EX_MEM and MEM
-    // wire            ex_wreg_i;
-    // wire[4:0]       ex_wd_i;
     wire[31:0]      ex_wdata_i;
     wire 			ex_is_in_delayslot_o;
 
@@ -81,9 +79,6 @@ module mycpu(
 
 
     // connect WB and Regfile
-    // wire[4:0]       wb_wd;
-    // wire            wb_wreg;
-    // wire[31:0]      wb_wdata;
     wire[4:0]       wb_wd_i;
     wire            wb_wreg_i;
     wire[31:0]      wb_wdata_i;
@@ -106,8 +101,8 @@ module mycpu(
         .pc(pc),
         .stall(stall),
     	.branch_flag_i(id_branch_flag_o),
-    	.branch_target_addr_i(id_branch_target_addr_o),
-    	.new_pc(new_pc)
+    	.branch_target_addr_i(id_branch_target_addr_o)
+    	//.new_pc(new_pc)
     );
 
     assign inst_rom_addr = pc;  // ?
@@ -116,10 +111,8 @@ module mycpu(
     regfile regfile1(
         .clk(clk),
         .rst(rstn),
-        // info from WB
-        // .we(wb_wreg), 
-        // .waddr(wb_wd),
-        // .wdata(wb_wdata),
+        
+        // info from MEM_WB
         .we(wb_wreg_i), 
         .waddr(wb_wd_i),
         .wdata(wb_wdata_i),
@@ -155,7 +148,7 @@ module mycpu(
         .rd1_i(reg1_data),    
         .rd2_i(reg2_data),
         
-        .ex_aluop_i(ex_aluop_o),
+        .ex_aluop_i(ex_aluop_o),  //
         
         // output to Regfile
         .reg1_read_o(reg1_read),    
@@ -311,21 +304,13 @@ module mycpu(
         .wb_wdata(wb_wdata_i)
     );
 
-    // WB real
-    wb wb0(
-        .rst(rstn),
-        .mem_wd(mem_wd_o),         .mem_wreg(mem_wreg_o),
-        .mem_wdata(mem_wdata_o),
-        
-        .wb_wd(wb_wd),  .wb_wreg(wb_wreg),
-        .wb_wdata(wb_wdata)
-    );
+
     
     ctrl ctrl0 (
 		.rst(rstn),
 		.stallreq_from_id(stallreq_from_id),
-		.stall(stall),
-		.new_pc(new_pc),
-		.flush(flush)
+		.stall(stall)
+		//.new_pc(new_pc),
+		//.flush(flush)
 	);
 endmodule

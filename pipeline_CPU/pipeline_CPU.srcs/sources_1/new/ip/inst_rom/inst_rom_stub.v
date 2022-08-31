@@ -1,10 +1,10 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
-// Date        : Tue Aug 30 10:39:59 2022
-// Host        : LAPTOP-E7VQLCM9 running 64-bit major release  (build 9200)
+// Date        : Wed Aug 31 15:15:30 2022
+// Host        : LAPTOP-ROG9K8TH running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub
-//               D:/git-project/pipeline-CPU-1/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/ip/inst_rom/inst_rom_stub.v
+//               C:/Users/s2330/Desktop/makeCPUresourse/pipeline-CPU/pipeline_CPU/pipeline_CPU.srcs/sources_1/new/ip/inst_rom/inst_rom_stub.v
 // Design      : inst_rom
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a35tcsg324-1
